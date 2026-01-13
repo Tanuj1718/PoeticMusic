@@ -4,12 +4,31 @@ import type { SavedGeneration } from '../types';
 const STORAGE_KEY = 'music_generations';
 
 /**
+ * Convert blob URL to base64 for persistent storage
+ */
+async function blobUrlToBase64(blobUrl: string): Promise<string> {
+  const response = await fetch(blobUrl);
+  const blob = await response.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+/**
  * Saves a generation to localStorage
  */
-export function saveGeneration(generation: Omit<SavedGeneration, 'id' | 'createdAt'>): void {
+export async function saveGeneration(generation: Omit<SavedGeneration, 'id' | 'createdAt'>): Promise<void> {
   const generations = getGenerations();
+  
+  // Convert blob URL to base64 for persistent storage
+  const audioBase64 = await blobUrlToBase64(generation.audioUrl);
+  
   const newGeneration: SavedGeneration = {
     ...generation,
+    audioUrl: audioBase64, // Store as base64 instead of blob URL
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
   };
@@ -56,7 +75,7 @@ export function clearAllGenerations(): void {
  */
 export function downloadAudio(audioUrl: string, filename: string): void {
   const link = document.createElement('a');
-  link.href = audioUrl;
+  link.href = audioUrl; // audioUrl is now base64, which works for downloads
   link.download = filename;
   document.body.appendChild(link);
   link.click();

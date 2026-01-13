@@ -59,12 +59,17 @@ export default function Home() {
       const url = URL.createObjectURL(musicBlob)
       setAudioUrl(url)
 
-      saveGeneration({
+      // Save to localStorage and trigger history update
+      await saveGeneration({
         lyrics,
         analysis: analyzeData.analysis,
         musicPrompt: analyzeData.musicPrompt,
         audioUrl: url,
       })
+      
+      // Dispatch event to update history sidebar immediately
+      window.dispatchEvent(new CustomEvent('generationsUpdated'))
+      
     } catch (error) {
       console.error("Error:", error)
       alert(error instanceof Error ? error.message : "An error occurred")
