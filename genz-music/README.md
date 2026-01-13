@@ -219,22 +219,6 @@ npm install
 - Verify the audio blob is being created successfully
 - Try a different browser (Chrome/Firefox recommended)
 
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import project in [Vercel](https://vercel.com)
-3. Add environment variables in project settings
-4. Deploy
-
-### Other Platforms
-
-Build the production version:
-```bash
-npm run build
-npm run start
-```
 
 ## 📄 License
 

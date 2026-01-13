@@ -97,6 +97,9 @@ Please provide your analysis in the following JSON format (respond ONLY with val
 //     const parsed =
 //       typeof outputText === "string" ? JSON.parse(outputText) : outputText;
 // console.log('Parsed output: ', parsed)
+// return parsed==null ? parsed: parsed as MusicPrompt;
+
+
   return {
     analysis: {
     mood: 'Reflective, resilient, nostalgic, with a touch of melancholic hope.',
